@@ -14,7 +14,7 @@
 
 #define MAX_TERMINALS 100
 #define MAX_TRANSACTIONS 100
-#define MAX_PAGE_SIZE 255
+#define MAX_PAGE_SIZE 1024
 
 enum cards {Visa,MAster,EFTPOS};
 enum accts {Credit,Cheque,Savings};
@@ -83,15 +83,11 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 		const char *version, const char *upload_data,
 		size_t *upload_data_size, void **con_cls)
 {
-	char page[MAX_PAGE_SIZE];
+/*	char page[MAX_PAGE_SIZE];
 	char tmp[MAX_PAGE_SIZE];
+	char *terminal_create = "{\"cardType\":[\"Visa\",\"MasterCard\",\"EFTPOS\"],\"TransactionType\":[\"Cheque\",\"Savings\",\"Credit\"]}";   
 	int i;
 	int urllen = strlen(url);
-	for(i=0;i<MAX_PAGE_SIZE-1;i++){
-		page[i] = '0';
-	}
-	page[MAX_PAGE_SIZE-1]='\0';
-	sprintf(page,"{\n");
 	//check if endpoint is corrent
 
 	if(strcmp(url,"/terminals") == 0){
@@ -104,9 +100,9 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 		}
 		
 	}else if(strcmp(url,"/terminal") == 0){
-		//if PUT create terminal
-		if(strcmp("POST", method) == 0){
-			add_terminal();
+		//if POST create terminal
+		if(strcmp("P0ST", method) == 0){
+			printf("processing POST\n");
 			//process post request
 			struct post_status *post = NULL;
 			  post = (struct post_status*)*con_cls;
@@ -127,8 +123,15 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 					*upload_data_size = 0;
 					return MHD_YES;
 				} else {
-					sprintf(tmp,"Post data: %s\n",post->buff);
+					sprintf(tmp,"%s\n",post->buff);
+					if(strcmp(post->buff, terminal_create) == 0){
+						add_terminal();
+						strcat(tmp,terminal_create);
+					}else{
+						strcat(tmp,"FAIL");
+					}
 					free(post->buff);
+					free(post);
 				}
 			  } 
 
@@ -171,21 +174,34 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 	}else{
 		sprintf(tmp,"error : \"Invalid URL %s\"",url);
 	}
-	strcat(page,tmp);
-	strcat(page,"\n}");
-	//page[strlen(page)] = '\0';
+	int last_mem = 0;
+	sprintf(page,"{\n");
+	last_mem = strlen(page);
+	memcpy(page + last_mem,tmp,strlen(tmp));
+	last_mem = strlen(page);
+	printf("page: |%s|, len: %d\n",page,strlen(page));
+	memcpy(page + last_mem,"\n}",3);
+	printf("page: |%s|, len: %d\n",page,strlen(page));
+*/	
+//	char *data=(char*)malloc(2 + strlen(tmp) + 2 + 1);
+	char *data=(char*)malloc(20);
+	//sprintf(data,"{%s}\0",tmp);
+	//printf("data|%s|, len=%d\n",data,strlen(data));
+	sprintf(data,"12345678901234567890");
+	printf("data|%s|, len=%d\n",data,strlen(data));
 	struct MHD_Response *response;
 	int ret;
-	response = MHD_create_response_from_buffer (strlen (page), (void *) page,
+	response = MHD_create_response_from_buffer (strlen (data), (void *) data,
 				MHD_RESPMEM_PERSISTENT);
 	//add json headers
 	//MHD_add_response_header(response,"Content-Type", "text/html");
 	MHD_add_response_header(response,"Content-Type", "application/json");
 	MHD_add_response_header(response,"Accept", "application/json");
 	ret = MHD_queue_response (connection, MHD_HTTP_OK, response);
+	//printf("tmp [%s]\n",tmp);
+	//printf("raw data [%s], strlen = %d\n",page, strlen(page));
 	MHD_destroy_response (response);
-	printf("tmp %s\n",tmp);
-	printf("raw data %s, strlen = %d\n",page, strlen(page));
+	free(data);
 	return ret;
 }
 int main ()
