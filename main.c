@@ -71,6 +71,12 @@ void list_terminals(char *data){
 	data[last_terminal*21 + 13] = '\0';
 }
 
+struct post_status {
+	int status;
+	char *buff;
+};
+
+
 static int conn = 0;
 static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 		const char *url, const char *method,
@@ -87,7 +93,9 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 	page[MAX_PAGE_SIZE-1]='\0';
 	sprintf(page,"{\n");
 	//check if endpoint is corrent
-	if(strncmp(url,"/terminals",10) == 0){
+
+	if(strcmp(url,"/terminals") == 0){
+		//show all terminals
 		if(last_terminal == -1){
 			sprintf(tmp,
 			"\"Terminals\":\"There are no terminals\"");
@@ -95,46 +103,70 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 			list_terminals(tmp);
 		}
 		
-	}else if(strncmp(url,"/terminal",9) == 0){
-		//check if want ot create or view terminal
-		if(urllen == 9 || ( urllen == 10 && url[9] == '/')){
-			//list all terminals
-			sprintf(tmp,
-			"\"url\" : \"Connection %d at URL %s\"",
-			conn++,url);
-		}else{
-			if(urllen > 10){
-				char *id = (char*)malloc(sizeof(char) * urllen - 10 + 1);
-				strcpy(id, url + 10);
-				//valid id = 0 < int <= MAX_TERMINALS
-				//if id not valid display error
-				int term_id = atoi(id);
-				if(term_id == 0){
-					sprintf(tmp,
-					"\"error\" : \"Invalid terminal id %s\"",
-					id);
-				}else{	
-					if(term_id < last_terminal + 1){
-					//id exists: show terminal transactions
-						sprintf(tmp,
-						"\"info\" : \"Show info for terminal %s\"",
-						id);
-					}else{
-					//else create terminal
-						sprintf(tmp,
-						"\"info\" : \"Will create terminal %s\"",
-						id);
-						if(add_terminal() == -1){
-							sprintf(tmp,
-							"\"error\" : \"Could not create terminal %s\"",
-							id);
+	}else if(strcmp(url,"/terminal") == 0){
+		//if PUT create terminal
+		if(strcmp("POST", method) == 0){
+			add_terminal();
+			//process post request
+			struct post_status *post = NULL;
+			  post = (struct post_status*)*con_cls;
 
-						};
-					}
+			  if(post == NULL) {
+				post = malloc(sizeof(struct post_status));
+				post->status = 0;
+				*con_cls = post;
+			  }
+
+			  if(!post->status) {
+				post->status = 1;
+				return MHD_YES;
+			  } else {
+				if(*upload_data_size != 0) {
+					post->buff = malloc(*upload_data_size + 1);
+					snprintf(post->buff, *upload_data_size+1,"%s",upload_data);
+					*upload_data_size = 0;
+					return MHD_YES;
+				} else {
+					sprintf(tmp,"Post data: %s\n",post->buff);
+					free(post->buff);
 				}
-				free(id);
+			  } 
+
+			  if(post != NULL)
+				free(post);
+			//end post
+		}
+	}else if(strncmp(url,"/terminals/",11) == 0){
+		if(urllen > 11){
+			char *id = (char*)malloc(sizeof(char) * urllen - 11 + 1);
+			strcpy(id, url + 11);
+			//valid id = 0 < int <= MAX_TERMINALS
+			//if id not valid display error
+			int term_id = atoi(id);
+			if(term_id == 0){
+				sprintf(tmp,
+				"\"error\" : \"Invalid terminal id %s\"",
+				id);
+			}else{	
+				if(term_id < last_terminal + 1){
+				//id exists: show terminal transactions
+					sprintf(tmp,
+					"\"info\" : \"Show info for terminal %s\"",
+					id);
+				}else{
+				//else create terminal
+					sprintf(tmp,
+					"\"info\" : \"Will create terminal %s\"",
+					id);
+					if(add_terminal() == -1){
+						sprintf(tmp,
+						"\"error\" : \"Could not create terminal %s\"",
+						id);
+
+					};
+				}
 			}
-			
+			free(id);
 		}
 	}else{
 		sprintf(tmp,"error : \"Invalid URL %s\"",url);
