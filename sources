@@ -1,0 +1,8 @@
+Sources of useful code and info
+
+1. Server code
+https://www.gnu.org/software/libmicrohttpd/ - examples
+
+2. POST processing
+https://stackoverflow.com/questions/36416422/process-post-data-in-microhttp-server-in-c
+
