@@ -1,0 +1,1 @@
+curl -i -H "Method: POST" -H "Content-Type: application/json" -d "{\"cardType\":[\"Visa\",\"MasterCard\",\"EFTPOS\"],\"TransactionType\":[\"Cheque\",\"Savings\",\"Credit\"]}" http://localhost:8888/terminal

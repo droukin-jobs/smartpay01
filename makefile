@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-c -Wall
 LDFLAGS=-lmicrohttpd
-SRS=main.c
+SRS=main.c json.c url.c terminal.c
 OBJ=$(SRS:.c=.o)
 EXE=sp_server
 
