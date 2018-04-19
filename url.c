@@ -2,6 +2,14 @@
 #include <stdlib.h>
 #include "url.h"
 
+//handle url processing
+
+// get url info as a bitmapped result:
+// empty url + POST
+// /terminal + POST
+// /terminals + GET
+// /terminals/{id} + GET
+// /terminals/{id} + POST
 int url_get_info(const char* url, const char* method){
 	//return int with bitmasks for methods and url components
 	int result = 0;
@@ -29,6 +37,8 @@ int url_get_info(const char* url, const char* method){
 	return result; 
 }
 
+
+// extracts terminal id from url
 int url_get_id(const char* url){
 	int len = strlen("/terminals/");
 	if(strlen(url) < len) return -1;

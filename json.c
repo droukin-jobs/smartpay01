@@ -3,6 +3,8 @@
 #include "json.h"
 
 //json helper functions
+//produces int, float and string elements
+//error creates 'error' message
 void json_int(char* tmp, const char* var, const int n){
 	sprintf(tmp,"\"%s\":\"%d\"",var,n);
 }

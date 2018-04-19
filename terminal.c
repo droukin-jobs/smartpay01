@@ -3,8 +3,11 @@
 #include "terminal.h"
 #include "json.h"
 
+//terminal array
 static terminal_type terminals[MAX_TERMINALS];
 static int last_terminal = -1;
+
+// adds terminal, if over limit returns -1
 int add_terminal(){
 	if((MAX_TERMINALS - 1) <= last_terminal) return -1;
 	int i = ++last_terminal;
@@ -15,6 +18,8 @@ int add_terminal(){
 	return i;
 }
 
+// adds transaction to a terminal
+// not fully implemented 
 int add_transaction(int terminal, int card, int acct){
 	int id = terminal;
 	int i = id;
@@ -28,6 +33,9 @@ int add_transaction(int terminal, int card, int acct){
 	return j;
 }
 
+// lists terminals as json objects
+// in the data variable
+// aborts (gracefully) execution if reached limit
 int list_terminals(char *data, const int max_data){
 	int i;
 	char tmp[24];
@@ -38,19 +46,17 @@ int list_terminals(char *data, const int max_data){
 	for(i=0;i<=last_terminal;i++){
 		int len = sprintf(tmp,"{\"TerminalID\":\"%04d\"},\n",terminals[i].id);
 		if(i == last_terminal) tmp[len - 2] = ' ';
-		printf("gathering info for term index%d, total length %d \n",i, strlen(tmp));
 		memcpy(data + data_len , tmp, strlen(tmp));
 		data_len += len;
 		if(data_len > max_data - len -2 ) break;
 	}
 	data[data_len] = ']';
 	data[data_len+1] = '\0';
-	printf("data len=%d of %d\n",strlen(data),max_data);
 	return last_terminal;
 }
 
+// shows terminal json object with dummy (at the moment) transactions
 void show_terminal_info(char* tmp, int id){
-	//at the moment dummy onl
 	if(id > last_terminal){
 		json_error(tmp,"Invalid terminal");
 		return;
