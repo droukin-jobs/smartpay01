@@ -12,7 +12,7 @@ $(EXE): $(OBJ)
 
 .c.o:
 	$(CC) $(CFLAGS) $< -o $@
-test_list:
+test_list_terminals:
 	./test_list_terminals.sh
 
 test_all: test_list

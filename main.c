@@ -16,7 +16,7 @@
 #include "url.h"
 #include "terminal.h"
 
-#define MAX_PAGE_SIZE 1024
+#define MAX_PAGE_SIZE MAX_TERMINALS * MAX_TERMINAL_SIZE + 1024
 
 struct connenction_info_struct
 {
@@ -52,20 +52,15 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 			if(id == -1) json_error(tmp,"Invalid terminal ID");
 			else show_terminal_info(tmp,id);
 		}else if(uinfo & URL_TERMINALS){
-			list_terminals(tmp);
+			if(list_terminals(tmp, MAX_PAGE_SIZE) == -1) json_error(tmp,"No terminals");
 		}
 
 	}
-	int last_mem = 0;
-	sprintf(page,"{\n");
-	last_mem = strlen(page);
-	memcpy(page + last_mem,tmp,strlen(tmp));
-	last_mem = strlen(page);
-	memcpy(page + last_mem,"\n}",3);
 	
-	char *data=(char*)malloc(2 + strlen(tmp) + 2);
+	char *data=(char*)malloc(strlen(tmp) + 3);
 	sprintf(data,"{%s}",tmp);
-	printf("data|%s|, len=%lu\n",data,strlen(data));
+	//char *data = "{'test':'value'}";
+	//printf("data|%s|, len=%d\n",data,strlen(data));
 	struct MHD_Response *response;
 	int ret;
 	response = MHD_create_response_from_buffer (strlen (data), (void *) data,
@@ -75,7 +70,7 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 	MHD_add_response_header(response,"Accept", "application/json");
 	ret = MHD_queue_response (connection, MHD_HTTP_OK, response);
 	MHD_destroy_response (response);
-	free(data);
+	//free(data);
 	return ret;
 }
 

@@ -1,6 +1,8 @@
 
 #define MAX_TRANSACTIONS 100
 #define MAX_TERMINALS 100
+//strlen of json {\n\"terminalID\":\"0000\"\n} 
+#define MAX_TERMINAL_SIZE 25
 
 static const char *terminal_create = "{\"cardType\":[\"Visa\",\"MasterCard\",\"EFTPOS\"],\"TransactionType\":[\"Cheque\",\"Savings\",\"Credit\"]}";   
 enum cards {Visa,MAster,EFTPOS};
@@ -21,5 +23,5 @@ int last_transaction;
 
 int add_terminal();
 int add_transaction(int terminal, int card, int acct);
-void list_terminals(char *data);
+int list_terminals(char *data, const int max_data);
 void show_terminal_info(char* tmp, int id);
