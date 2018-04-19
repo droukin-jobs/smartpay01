@@ -16,9 +16,25 @@
 #define MAX_TRANSACTIONS 100
 #define MAX_PAGE_SIZE 1024
 
+
+
+const char *terminal_create = "{\"cardType\":[\"Visa\",\"MasterCard\",\"EFTPOS\"],\"TransactionType\":[\"Cheque\",\"Savings\",\"Credit\"]}";   
 enum cards {Visa,MAster,EFTPOS};
 enum accts {Credit,Cheque,Savings};
 
+//json helper functions
+void json_int(char* tmp, const char* var, const int n){
+	sprintf(tmp,"\"%s\":\"%d\"",var,n);
+}
+void json_float(char* tmp, const char* var, const float n){
+	sprintf(tmp,"\"%s\":\"%f\"",var,n);
+}
+void json_str(char* tmp, const char* var, const char* n){
+	sprintf(tmp,"\"%s\":\"%s\"",var,n);
+}
+void json_error(char* tmp, const char* n){
+	sprintf(tmp, "\"error\":\"%s\"",n);
+}
 typedef struct {
 int id;
 int card;
@@ -72,19 +88,16 @@ void list_terminals(char *data){
 }
 
 void show_terminal_info(char* tmp, int id){
+	//at the moment dummy onl
+	if(id > last_terminal){
+		json_error(tmp,"Invalid terminal");
+		return;
+	}
 	sprintf(tmp,"\"terminalID\":\"%d\",\"transactions\":[\
 		{\"cardType\":\"Visa\",\"TransactionType\":\"Credit\"},\
 		{\"cardType\":\"EFTPOS\",\"TransactionType\":\"Savings\"}]",id);
 }
 
-struct post_status {
-	int status;
-	char *buff;
-};
-
-void json_error(char* tmp, const char* err){
-	sprintf("\"error\":\"%s\"",err);
-}
 
 struct connenction_info_struct
 {
@@ -94,6 +107,51 @@ struct connenction_info_struct
 	char *answerstring;
 	int answercode;
 };
+
+#define METHOD_GET 1
+#define METHOD_POST 2
+#define URL_TERMINALS 4
+#define URL_TERMINAL 8
+#define URL_TERMINAL_ID 16 
+#define URL_ERROR 256
+#define URL_VALID (URL_TERMINAL | URL_TERMINALS | URL_TERMINAL_ID)
+
+int url_get_info(const char* url, const char* method){
+	//return int with bitmasks for methods and url components
+	int result = 0;
+	int len = strlen(url);
+	if(strcmp(method,"POST") == 0)
+		result |= METHOD_POST;
+	else
+		result |= METHOD_GET;
+	if(len == 0 && len & METHOD_GET) return result | URL_ERROR;
+	int i;
+	if( strncmp("/terminals",url, strlen("/terminals")) == 0 ){
+		if(len == strlen("/terminals")) 
+			result |= URL_TERMINALS;
+		else
+			result |= URL_TERMINAL_ID;
+	}
+	if(!( result & URL_TERMINALS )){
+		if( strcmp("/terminal",url) == 0 ){
+			result |= URL_TERMINAL;
+		}
+	}
+	if(!(result & URL_VALID) && len != 0) return URL_ERROR;
+	return result; 
+}
+
+int url_get_id(const char* url){
+	int len = strlen("/terminals/");
+	if(strlen(url) < len) return -1;
+	char *id = (char*)malloc(strlen(url) - len + 1);
+	sprintf(id,url + len);
+	int term_id = atoi(id);
+	if(term_id == 0){
+		if(strcmp(id,"0") != 0) return -1;
+	}
+	return term_id;
+}
 static int conn = 0;
 static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 	const char *url, const char *method,
@@ -103,21 +161,43 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 	char page[MAX_PAGE_SIZE];
 	char tmp[MAX_PAGE_SIZE];
 	strcpy(tmp,"\"a\":\"A\"");
-	char *terminal_create = "{\"cardType\":[\"Visa\",\"MasterCard\",\"EFTPOS\"],\"TransactionType\":[\"Cheque\",\"Savings\",\"Credit\"]}";   
 	int i;
 	int urllen = strlen(url);
 	//check if endpoint is corrent
 	//printf("METHOD %s\n",method);
-	if(strcmp(url,"/terminals") == 0){
+	/*if(strcmp(url,"/terminals") == 0){
 		//show all terminals
 		if(last_terminal == -1){
-			sprintf(tmp,
-			"\"Terminals\":\"There are no terminals\"");
+			json_str(tmp,
+			"Terminals","There are no terminals");
 		}else{
 			list_terminals(tmp);
 		}
 		
-	}else if(strcmp(url,"/terminal") == 0){
+	}*/
+	int uinfo = url_get_info(url,method);
+	if(uinfo & URL_ERROR) json_error(tmp,"Invalid URL");
+	else if (uinfo & METHOD_POST){
+		if(uinfo & URL_TERMINAL || uinfo == METHOD_POST){
+			int id = add_terminal();
+			if(id == -1) json_error(tmp,"Could not create terminal");
+			else json_int(tmp,"terminalID",id);
+		}else if(uinfo & URL_TERMINAL_ID){
+			//process terminal transaction
+		}
+	}else{
+		if(uinfo & URL_TERMINAL) json_error(tmp,"Use POST method");
+		else if(uinfo & URL_TERMINAL_ID){
+			int id = url_get_id(url);
+			if(id == -1) json_error(tmp,"Invalid terminal ID");
+			else show_terminal_info(tmp,id);
+		}else if(uinfo & URL_TERMINALS){
+			list_terminals(tmp);
+		}
+
+	}
+/*
+else if(strcmp(url,"/terminal") == 0){
 		//if POST create terminal
 		printf("Method: |%s|\n",method);
 		if(strcmp(method,"POST") == 0){
@@ -126,8 +206,10 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 			if(term_id == -1) {
 				json_error(tmp,"Could not create terminal");
 			}else{
-				sprintf(tmp,"\"terminalID\":\"%d\"",term_id);
+				json_int(tmp,"terminalID",term_id);
 			}
+		}else{
+			json_error(tmp,"Use POST method");
 		}
 	}else if(strncmp(url,"/terminals/",11) == 0){
 		if(urllen > 11){
@@ -136,12 +218,11 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 			//valid id = 0 < int <= MAX_TERMINALS
 			//if id not valid display error
 			int term_id = atoi(id);
-			if(term_id > MAX_TERMINALS || term_id < 0){
-				sprintf(tmp,
-				"\"error\" : \"Invalid terminal id %s\"",
-				id);
+			if(term_id > last_terminal || term_id < 0){
+				json_error(tmp,"Invalid terminal id");
+				//sprintf(tmp,"\"error\" : \"Invalid terminal id %s\"",id);
 			}else{	
-				if(term_id < last_terminal + 1){
+				if(term_id <= last_terminal){
 				//id exists: show terminal transactions
 					if(strcmp(method,"POST") == 0){
 						//process post data to update terminal
@@ -156,7 +237,7 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 		}
 	}else{
 		sprintf(tmp,"error : \"Invalid URL %s\"",url);
-	}
+	}*/
 	int last_mem = 0;
 	sprintf(page,"{\n");
 	last_mem = strlen(page);
