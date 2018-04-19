@@ -1,0 +1,14 @@
+1. End point to create terminals and display 
+ a. URL/terminal will create terminal with next available ID
+ b. POST request + JSON {'cardType'...} to URL create terminal with next available ID
+ After terminal created server sends JSON {terminalID:{ID}...}
+
+2. End point to read details of existing terminal URL/terminals/{id}
+
+3. End point to return a list of all terminals
+
+4. Independent modules
+
+5. Automated unit and acceptance tests
+
+6. Basic documentation/comments
