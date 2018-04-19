@@ -47,7 +47,7 @@ To compile tests use the makefile in the tests/ directory
 ---
 3. INSTALL
 
-After successful compilation the  binary "spserver" will be available in the project root directory. Copy it wherever seems suitable.
+After successful compilation the  binary "sp_server" will be available in the project root directory. Copy it wherever seems suitable.
 
 ---
 4. USAGE
