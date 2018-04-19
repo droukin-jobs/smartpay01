@@ -2,13 +2,13 @@
 
 TOC
 
-###1 Intro
-###2 Compile
-###3 Inastall
-###4 Usage
-###5 Testing
+### 1 Intro
+### 2 Compile
+### 3 Inastall
+### 4 Usage
+### 5 Testing
 ---
-##1 INTRO
+## 1 INTRO
 
 This project was designed as a main requirement for Smartpay job test (started a 16.00 18-04-2018 NZT, will be handed in by 16.00 20-04-2018). 
 
@@ -28,7 +28,7 @@ Not implemented features:
  - JSON POST input to update transactions
  - comprehensive main program testing
 ---
-##2 COMPILE
+## 2 COMPILE
 
 There are two libraries used in this project:
  
