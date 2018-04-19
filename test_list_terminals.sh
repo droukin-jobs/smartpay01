@@ -11,7 +11,7 @@ fi
 
 
 for i in $(seq 1 3); do
-	curl http://localhost:8888/terminal/$i
+	curl -X POST http://localhost:8888/terminal
 	sleep .5
 done
 
