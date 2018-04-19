@@ -23,6 +23,7 @@ At the moment the following features are complete:
 Partially complete features:
  - Terminal creation is done only by empty POST request to `/terminal` endpoint
  - Terminals have only dummy transactions
+ - Terminals structure is able to accept transactions, but the actual mechanism is not ready
 
 Not implemented features:
  - JSON POST input to create terminals
@@ -30,7 +31,7 @@ Not implemented features:
  - Comprehensive main program testing
  - Server config options (not required for the project but would be nice to have)
 
-In order to fullfil the requirements i will need to provide a way of parsing JSON data and make sure the POST data processing is safe and reliable. Right now the POST processing is being worked upon but is still quite unstable. Also will need to develop a 
+In order to fullfil the requirements i will need to provide a way of parsing JSON data and make sure the POST data processing is safe and reliable. Right now the POST processing is being worked upon but is still quite unstable. Also will need to develop a thread management system to monitor server load. 
 
 ---
 ## 2 COMPILE
