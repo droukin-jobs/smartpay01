@@ -84,6 +84,17 @@ void test_url_get_info_get(void){
 	CU_ASSERT(result & URL_TERMINAL_ID);
 	CU_ASSERT_FALSE(result & URL_TERMINAL);
 	CU_ASSERT_FALSE(result & URL_TERMINALS);
+	
+	//test with invalid URL
+	sprintf(url,"/terminalss");
+	CU_ASSERT(result & URL_ERROR);
+	CU_ASSERT_FALSE(result & URL_VALID);
+	sprintf(url,"/terminals/");
+	CU_ASSERT(result & URL_ERROR);
+	CU_ASSERT_FALSE(result & URL_VALID);
+	sprintf(url,"/termina");
+	CU_ASSERT(result & URL_ERROR);
+	CU_ASSERT_FALSE(result & URL_VALID);
 }
 
 int main()
