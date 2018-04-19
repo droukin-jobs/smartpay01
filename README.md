@@ -16,6 +16,7 @@ At the moment the following features are complete:
  - Endpoint to create new terminals
  - Endpoint to list terminals
  - Endpoint to view terminal details
+ - Each connection runs in it's own thread
  - Tests for helper functions
  - Documentation (you are reading it)
 
@@ -27,6 +28,9 @@ Not implemented features:
  - JSON POST input to create terminals
  - JSON POST input to update transactions
  - comprehensive main program testing
+
+In order to fullfil the requirements i will need to provide a way of parsing JSON data and make sure the POST data processing is safe and reliable. Right now the POST processing is being worked upon but is still quite unstable. Also will need to develop a 
+
 ---
 ## 2 COMPILE
 
@@ -47,7 +51,7 @@ To compile tests use the makefile in the tests/ directory
 ---
 ## 3 INSTALL
 
-After successful compilation the  binary "sp_server" will be available in the project root directory. Copy it wherever seems suitable.
+After successful compilation the  binary "sp\_server" will be available in the project root directory. Copy it wherever seems suitable.
 
 ---
 ## 4 USAGE
@@ -65,11 +69,14 @@ For POST requests use curl or similar programm:
 ---
 ## 5 TESTING
 
-All tests are in file tests/test.c
+All runtime tests are in /\*.sh
+- Multithreading performance can be tested with test\_list\_terminals.sh script by forking it several times
+- There are makfeil rules for runtime testing
 
-At the moment there are helper function tests checking for validity of input and some boundary conditions.
+All function tests are in file tests/test.c
+- At the moment there are only helper function tests checking for validity of input and some boundary conditions.
 
-Note: json_float_test fails due to flaoting point format not being carefully specified, but this function is not used in the project and there fore will not be fixed in the nearest future.
+Note: json\_float\_test fails due to floating point format not being carefully specified, but this function is not used in the project and there fore will not be fixed in the nearest future.
 
 ---
 ### PS. Thank you
