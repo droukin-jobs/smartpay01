@@ -27,7 +27,8 @@ Partially complete features:
 Not implemented features:
  - JSON POST input to create terminals
  - JSON POST input to update transactions
- - comprehensive main program testing
+ - Comprehensive main program testing
+ - Server config options (not required for the project but would be nice to have)
 
 In order to fullfil the requirements i will need to provide a way of parsing JSON data and make sure the POST data processing is safe and reliable. Right now the POST processing is being worked upon but is still quite unstable. Also will need to develop a 
 
@@ -66,6 +67,9 @@ For POST requests use curl or similar programm:
 ```
  curl -X POST localhost:8888/terminal 	will create new terminal
 ```
+
+To stop the server please press a key in the server's terminal. 
+
 ---
 ## 5 TESTING
 
