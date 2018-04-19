@@ -41,11 +41,14 @@ There are two libraries used in this project:
   - provides framework for testing
 
 To compile main project use the makefile and GNU make in the projects root directory
+
 To compile tests use the makefile in the tests/ directory
+
 ---
 3. INSTALL
 
 After successful compilation the  binary "spserver" will be available in the project root directory. Copy it wherever seems suitable.
+
 ---
 4. USAGE
 
@@ -63,9 +66,11 @@ For POST requests use curl or similar programm:
 5. TESTING
 
 All tests are in file tests/test.c
+
 At the moment there are helper function tests checking for validity of input and some boundary conditions.
 
 Note: json_float_test fails due to flaoting point format not being carefully specified, but this function is not used in the project and there fore will not be fixed in the nearest future.
+
 ---
 PS. Thank you
 
