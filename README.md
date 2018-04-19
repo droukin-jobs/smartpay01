@@ -7,7 +7,7 @@ TOC
 3. Inastall
 4. Usage
 5. Testing
-
+---
 1. INTRO
 
 This project was designed as a main requirement for Smartpay job test (started a 16.00 18-04-2018 NZT, will be handed in by 16.00 20-04-2018). 
@@ -59,8 +59,9 @@ For POST requests use curl or similar programm:
 ```
  curl -X POST localhost:8888/terminal 	will create new terminal
 ```
-5. TESTIGN
+5. TESTING
 
 All tests are in file tests/test.c
 At the moment there are helper function tests checking for validity of input and some boundary conditions.
+
 Note: json_float_test fails due to flaoting point format not being carefully specified, but this function is not used in the project and there fore will not be fixed in the nearest future.
