@@ -83,13 +83,14 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 		const char *version, const char *upload_data,
 		size_t *upload_data_size, void **con_cls)
 {
-/*	char page[MAX_PAGE_SIZE];
+	char page[MAX_PAGE_SIZE];
 	char tmp[MAX_PAGE_SIZE];
+	strcpy(tmp,"\"a\":\"A\"");
 	char *terminal_create = "{\"cardType\":[\"Visa\",\"MasterCard\",\"EFTPOS\"],\"TransactionType\":[\"Cheque\",\"Savings\",\"Credit\"]}";   
 	int i;
 	int urllen = strlen(url);
 	//check if endpoint is corrent
-
+	printf("METHOD %s\n",method);
 	if(strcmp(url,"/terminals") == 0){
 		//show all terminals
 		if(last_terminal == -1){
@@ -101,14 +102,16 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 		
 	}else if(strcmp(url,"/terminal") == 0){
 		//if POST create terminal
-		if(strcmp("P0ST", method) == 0){
+		printf("check for  POST method = |%s|\n",method);
+		if(strcmp(method,"POST") == 0){
 			printf("processing POST\n");
+		
 			//process post request
 			struct post_status *post = NULL;
 			  post = (struct post_status*)*con_cls;
 
 			  if(post == NULL) {
-				post = malloc(sizeof(struct post_status));
+				post = (struct post_status*)malloc(sizeof(struct post_status));
 				post->status = 0;
 				*con_cls = post;
 			  }
@@ -123,15 +126,16 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 					*upload_data_size = 0;
 					return MHD_YES;
 				} else {
-					sprintf(tmp,"%s\n",post->buff);
+					sprintf(tmp,"%s",post->buff);
 					if(strcmp(post->buff, terminal_create) == 0){
+						printf("add terminal\n");
 						add_terminal();
 						strcat(tmp,terminal_create);
 					}else{
 						strcat(tmp,"FAIL");
 					}
 					free(post->buff);
-					free(post);
+					//free(post);
 				}
 			  } 
 
@@ -179,15 +183,15 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 	last_mem = strlen(page);
 	memcpy(page + last_mem,tmp,strlen(tmp));
 	last_mem = strlen(page);
-	printf("page: |%s|, len: %d\n",page,strlen(page));
+	//printf("page: |%s|, len: %d\n",page,strlen(page));
 	memcpy(page + last_mem,"\n}",3);
-	printf("page: |%s|, len: %d\n",page,strlen(page));
-*/	
-//	char *data=(char*)malloc(2 + strlen(tmp) + 2 + 1);
-	char *data=(char*)malloc(20);
-	//sprintf(data,"{%s}\0",tmp);
+	//printf("page: |%s|, len: %d\n",page,strlen(page));
+	
+	char *data=(char*)malloc(2 + strlen(tmp) + 2 + 1);
+	//char *data=(char*)malloc(20);
+	sprintf(data,"{%s}\0",tmp);
 	//printf("data|%s|, len=%d\n",data,strlen(data));
-	sprintf(data,"12345678901234567890");
+	//sprintf(data,"12345678901234567890");
 	printf("data|%s|, len=%d\n",data,strlen(data));
 	struct MHD_Response *response;
 	int ret;
