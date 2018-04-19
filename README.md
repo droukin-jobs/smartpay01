@@ -33,6 +33,7 @@ There are two libraries used in this project:
  a. libmicrohttpd 
   - https://www.gnu.org/software/libmicrohttpd/
   - provides web server API
+ 
  b. CUnit
   - http://cunit.sourceforge.net/
   - provides framework for testing
@@ -47,10 +48,13 @@ After successful compilation the  binary "spserver" will be available in the pro
 4. USAGE
 
 After launching the server will be available on port 8888. For GET requests you can us a web browser:
+ ```
  localhost:8888
      /terminals 			will list available terminals
      /terminals/{id} 		will display particular terminal info
+ ```
 For POST requests use curl or similar programm:
+```
  curl -X POST localhost:8888/terminal 	will create new terminal
-
+```
 
