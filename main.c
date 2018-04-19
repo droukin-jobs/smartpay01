@@ -71,6 +71,12 @@ void list_terminals(char *data){
 	data[last_terminal*23 + 13] = '\0';
 }
 
+void show_terminal_info(char* tmp, int id){
+	sprintf(tmp,"\"terminalID\":\"%d\",\"transactions\":[\
+		{\"cardType\":\"Visa\",\"TransactionType\":\"Credit\"},\
+		{\"cardType\":\"EFTPOS\",\"TransactionType\":\"Savings\"}]",id);
+}
+
 struct post_status {
 	int status;
 	char *buff;
@@ -137,20 +143,13 @@ static int answer_to_connection (void *cls, struct MHD_Connection *connection,
 			}else{	
 				if(term_id < last_terminal + 1){
 				//id exists: show terminal transactions
-					sprintf(tmp,
-					"\"info\" : \"Show info for terminal %s\"",
-					id);
-				}else{
-				//else create terminal
-					sprintf(tmp,
-					"\"info\" : \"Will create terminal %s\"",
-					id);
-					if(add_terminal() == -1){
-						sprintf(tmp,
-						"\"error\" : \"Could not create terminal %s\"",
-						id);
-
-					};
+					if(strcmp(method,"POST") == 0){
+						//process post data to update terminal
+						printf("add transactions\n");
+					}else{
+						printf("show term info\n");
+						show_terminal_info(tmp, term_id);
+					}
 				}
 			}
 			free(id);
