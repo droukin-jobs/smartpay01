@@ -51,7 +51,7 @@ To compile tests use the makefile in the `tests/` directory
 ---
 ## 3 INSTALL
 
-After successful compilation the  binary "sp\_server" will be available in the project root directory. Copy it wherever seems suitable.
+After successful compilation the  binary `sp_server` will be available in the project root directory. Copy it wherever seems suitable.
 
 ---
 ## 4 USAGE
@@ -70,7 +70,7 @@ For POST requests use curl or similar programm:
 ## 5 TESTING
 
 All runtime tests are in /\*.sh
-- Multithreading performance can be tested with `test\_list\_terminals.sh` script by forking it several times
+- Multithreading performance can be tested with `test_list_terminals.sh` script by forking it several times
 - There are makefile rules for runtime testing
 
 All function tests are in file `tests/test.c`
@@ -78,7 +78,7 @@ All function tests are in file `tests/test.c`
 - Use `tests/makefile` to compile the tests
 - Use `tests/test binary` to run tests
 
-Note: `json\_float\_test` fails due to floating point format not being carefully specified, but this function is not used in the project and there fore will not be fixed in the nearest future.
+Note: `json_float_test` fails due to floating point format not being carefully specified, but this function is not used in the project and there fore will not be fixed in the nearest future.
 
 ---
 ### PS. Thank you
