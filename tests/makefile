@@ -1,9 +1,9 @@
 CC=gcc
 CFLAGS=-c -Wall
-LDFLAGS=-lmicrohttpd
-SRS=main.c json.c url.c terminal.c
+LDFLAGS=-lcunit
+SRS=test.c ../json.c ../url.c ../terminal.c
 OBJ=$(SRS:.c=.o)
-EXE=sp_server
+EXE=test
 
 all: $(SRC) $(EXE)
 
@@ -12,11 +12,6 @@ $(EXE): $(OBJ)
 
 .c.o:
 	$(CC) $(CFLAGS) $< -o $@
-test_list:
-	./test_list_terminals.sh
-
-test_all: test_list
-
 
 clean : 
-	$(RM) *.o sp_server
+	$(RM) *.o test

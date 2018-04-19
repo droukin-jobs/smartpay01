@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "json.h"
 
 //json helper functions

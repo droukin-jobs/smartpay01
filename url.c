@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "url.h"
 
 int url_get_info(const char* url, const char* method){
@@ -10,7 +11,6 @@ int url_get_info(const char* url, const char* method){
 	else
 		result |= METHOD_GET;
 	if(len == 0 && len & METHOD_GET) return result | URL_ERROR;
-	int i;
 	if( strncmp("/terminals",url, strlen("/terminals")) == 0 ){
 		if(len == strlen("/terminals")) 
 			result |= URL_TERMINALS;
