@@ -71,10 +71,12 @@ For POST requests use curl or similar programm:
 
 All runtime tests are in /\*.sh
 - Multithreading performance can be tested with test\_list\_terminals.sh script by forking it several times
-- There are makfeil rules for runtime testing
+- There are makefile rules for runtime testing
 
 All function tests are in file tests/test.c
 - At the moment there are only helper function tests checking for validity of input and some boundary conditions.
+- Use tests/makefile to compile the tests
+- Use tests/test binary to run tests
 
 Note: json\_float\_test fails due to floating point format not being carefully specified, but this function is not used in the project and there fore will not be fixed in the nearest future.
 
