@@ -6,11 +6,14 @@ int url_get_info(const char* url, const char* method){
 	//return int with bitmasks for methods and url components
 	int result = 0;
 	int len = strlen(url);
-	if(strcmp(method,"POST") == 0)
+	//for some reason empty URL has lenght 1
+	if(strcmp(method,"POST") == 0){
 		result |= METHOD_POST;
-	else
+		if(len == 1) return METHOD_POST;
+	}else{
 		result |= METHOD_GET;
-	if(len == 0 && len & METHOD_GET) return result | URL_ERROR;
+		if(len == 1) return URL_ERROR;
+	}
 	if( strncmp("/terminals",url, strlen("/terminals")) == 0 ){
 		if(len == strlen("/terminals")) 
 			result |= URL_TERMINALS;
@@ -22,7 +25,7 @@ int url_get_info(const char* url, const char* method){
 			result |= URL_TERMINAL;
 		}
 	}
-	if(!(result & URL_VALID) && len != 0) return URL_ERROR;
+	if(!(result & URL_VALID) && len != 1) return URL_ERROR;
 	return result; 
 }
 
