@@ -21,7 +21,7 @@ At the moment the following features are complete:
  - Documentation (you are reading it)
 
 Partially complete features:
- - Terminal creation is done only by empty POST request to /terminal endpoint
+ - Terminal creation is done only by empty POST request to `/terminal` endpoint
  - Terminals have only dummy transactions
 
 Not implemented features:
@@ -46,7 +46,7 @@ There are two libraries used in this project:
 
 To compile main project use the makefile and GNU make in the projects root directory
 
-To compile tests use the makefile in the tests/ directory
+To compile tests use the makefile in the `tests/` directory
 
 ---
 ## 3 INSTALL
@@ -70,15 +70,15 @@ For POST requests use curl or similar programm:
 ## 5 TESTING
 
 All runtime tests are in /\*.sh
-- Multithreading performance can be tested with test\_list\_terminals.sh script by forking it several times
+- Multithreading performance can be tested with `test\_list\_terminals.sh` script by forking it several times
 - There are makefile rules for runtime testing
 
-All function tests are in file tests/test.c
+All function tests are in file `tests/test.c`
 - At the moment there are only helper function tests checking for validity of input and some boundary conditions.
-- Use tests/makefile to compile the tests
-- Use tests/test binary to run tests
+- Use `tests/makefile` to compile the tests
+- Use `tests/test binary` to run tests
 
-Note: json\_float\_test fails due to floating point format not being carefully specified, but this function is not used in the project and there fore will not be fixed in the nearest future.
+Note: `json\_float\_test` fails due to floating point format not being carefully specified, but this function is not used in the project and there fore will not be fixed in the nearest future.
 
 ---
 ### PS. Thank you
