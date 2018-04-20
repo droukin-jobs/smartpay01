@@ -80,9 +80,10 @@ To stop the server please press a key in the server's terminal.
 ---
 ## 5 TESTING
 
-All runtime tests are in /\*.sh
-- Multithreading performance can be tested with `test_list_terminals.sh` script by forking it several times
-- There are makefile rules for runtime testing
+Runtime tests are in `test_scenarios.sh`
+ - The scenarios test server operation and simulate user queries (acceptance testing)
+ - Make sure `sp_server` is just started
+ - Run `make test`
 
 All function tests are in file `tests/test.c`
 - At the moment there are only helper function tests checking for validity of input and some boundary conditions.

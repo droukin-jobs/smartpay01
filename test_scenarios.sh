@@ -24,7 +24,7 @@ MAX_TERMINALS=100
 #begin
 scenario=0 
 t=0
-echo "Scenario $scenario ========"
+echo "Scenario $scenario ====="
 echo -n "   Test $t ... "
 curl -X GET -ss "$server/terminals" |grep -q "error" && echo OK || echo FAIL
 sleep .5
@@ -42,7 +42,7 @@ sleep .5
 #begin
 scenario=$(($scenarioi + 1))
 t=0
-echo "Scenario $scenario ========"
+echo "Scenario $scenario ====="
 echo -n "   Test $t ... "
 curl -X POST -ss $server/terminal |grep "terminalID" -q && echo OK || echo FAIL
 sleep .1
@@ -65,7 +65,7 @@ sleep .1
 #begin
 scenario=$(($scenario + 1))
 t=0
-echo "Scenario $scenario ========"
+echo "Scenario $scenario ====="
 echo -n "   Test $t ... "
 for i in $(seq 1 10); do
 	curl -X POST -ss $server/terminal > /dev/null
@@ -96,7 +96,7 @@ sleep .1
 #begin
 scenario=$(($scenario + 1))
 t=0
-echo "Scenario $scenario ========"
+echo "Scenario $scenario ====="
 echo -n "   Test $t ... "
 for i in $(seq 1 $MAX_TERMINALS); do
 	curl -X POST -ss $server/terminal > /dev/null
