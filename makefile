@@ -12,11 +12,9 @@ $(EXE): $(OBJ)
 
 .c.o:
 	$(CC) $(CFLAGS) $< -o $@
-test_list_terminals:
-	./test_list_terminals.sh
 
-test_all: test_list
-
+test:
+	./test_scenarios.sh
 
 clean : 
 	$(RM) *.o sp_server
