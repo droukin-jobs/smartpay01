@@ -84,7 +84,7 @@ To stop the server please press a key in the server's terminal.
 ---
 ## 5 TESTING
 
-Runtime tests are in `test_scenarios.sh`
+Runtime tests are in `tests/test_scenarios.sh`
  - The scenarios test server operation and simulate user queries (acceptance testing)
  - Make sure `sp_server` is just started
  - Run `make test`

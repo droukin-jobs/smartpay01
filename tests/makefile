@@ -13,5 +13,8 @@ $(EXE): $(OBJ)
 .c.o:
 	$(CC) $(CFLAGS) $< -o $@
 
+test_scenarios:
+	test_scenarios.sh
+
 clean : 
 	$(RM) *.o test

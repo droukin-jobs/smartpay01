@@ -14,7 +14,7 @@ $(EXE): $(OBJ)
 	$(CC) $(CFLAGS) $< -o $@
 
 test:
-	./test_scenarios.sh
+	tests/test_scenarios.sh
 
 clean : 
 	$(RM) *.o sp_server

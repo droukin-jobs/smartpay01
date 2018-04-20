@@ -34,6 +34,8 @@ void test_json_error(void)
 	json_error(tmp,"value");
       CU_ASSERT(strcmp(tmp,out) == 0);
 }
+
+
 void test_url_get_info_post(void){
 	//test for method = POST
 	char url[100];
@@ -42,7 +44,7 @@ void test_url_get_info_post(void){
 	sprintf(method,"POST");
 
 	//test empty url
-	sprintf(url,"");
+	sprintf(url,"/");
 	result = url_get_info(url,method);
 	CU_ASSERT(result & METHOD_POST);
 	CU_ASSERT_FALSE(result & URL_VALID);
@@ -64,9 +66,9 @@ void test_url_get_info_get(void){
 	sprintf(method,"GET");
 
 	//test empty url
-	sprintf(url,"");
+	sprintf(url,"/");
 	result = url_get_info(url,method);
-	CU_ASSERT(result & METHOD_GET);
+	CU_ASSERT_FALSE(result & METHOD_GET);
 	CU_ASSERT_FALSE(result & URL_VALID);
 	CU_ASSERT_FALSE(result & METHOD_POST);
 
@@ -87,12 +89,17 @@ void test_url_get_info_get(void){
 	
 	//test with invalid URL
 	sprintf(url,"/terminalss");
+	result = url_get_info(url,method);
 	CU_ASSERT(result & URL_ERROR);
 	CU_ASSERT_FALSE(result & URL_VALID);
+	
 	sprintf(url,"/terminals/");
+	result = url_get_info(url,method);
 	CU_ASSERT(result & URL_ERROR);
 	CU_ASSERT_FALSE(result & URL_VALID);
+
 	sprintf(url,"/termina");
+	result = url_get_info(url,method);
 	CU_ASSERT(result & URL_ERROR);
 	CU_ASSERT_FALSE(result & URL_VALID);
 }
