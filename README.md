@@ -33,6 +33,12 @@ Not implemented features:
 
 In order to fullfil the requirements i will need to provide a way of parsing JSON data and make sure the POST data processing is safe and reliable. Right now the POST processing is being worked upon but is still quite unstable. Also will need to develop a thread management system to monitor server load. 
 
+### Assumptions and notes
+
+The project is supposed to compile and run on a `POSIX` compatible system, with `GNU make` and `gcc`. 
+
+Successfuly tested on `Slackware Linux 3.9.5 #2 SMP x86_64 i5-3470 CPU @ 3.20GHz` and `Darwin 14.3.0 PDT 2015 x86_64`
+
 ---
 ## 2 COMPILE
 

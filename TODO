@@ -1,14 +1,14 @@
 1. End point to create terminals and display 
- a. URL/terminal will create terminal with next available ID
- b. POST request + JSON {'cardType'...} to URL create terminal with next available ID
- After terminal created server sends JSON {terminalID:{ID}...}
+ a. URL/terminal will create terminal with next available ID - DONE
+ b. POST request + JSON {'cardType'...} to URL create terminal with next available ID - Partially Done
+ After terminal created server sends JSON {terminalID:{ID}...} - DONE
 
-2. End point to read details of existing terminal URL/terminals/{id}
+2. End point to read details of existing terminal URL/terminals/{id} - DONE
 
-3. End point to return a list of all terminals
+3. End point to return a list of all terminals - DONE
 
-4. Independent modules
+4. Independent modules - Partially Done, each connectin runs in separate thread 
 
-5. Automated unit and acceptance tests
+5. Automated unit and acceptance tests - Partially Done: helper functions and realtime testing
 
-6. Basic documentation/comments
+6. Basic documentation/comments - DONE
