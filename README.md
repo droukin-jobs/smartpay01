@@ -35,7 +35,7 @@ Not implemented features:
  - Comprehensive main program testing
  - Server config options (not required for the project but would be nice to have)
 
-In order to fullfil the requirements i will need to provide a way of parsing JSON data and make sure the POST data processing is safe and reliable. Right now the POST processing is being worked upon but is still quite unstable. Also will need to develop a thread management system to monitor server load. 
+In order to fullfil the requirements i will need to provide a way of parsing JSON data and make sure the POST data processing is safe and reliable. Right now the POST processing is being worked upon but is still quite unstable, so it is commented out in the `main.c`. Also will need to develop a thread management system to monitor server load. 
 
 ### Assumptions and notes
 
@@ -55,6 +55,14 @@ There are two libraries used in this project:
  b. CUnit
   - http://cunit.sourceforge.net/
   - provides framework for testing
+
+These files required for compilation:
+
+ - `main.c` 			= the server
+ - `json.c json.h` 		= json utility functions
+ - `url.c url.h` 		= url processing functions
+ - `terminal.c terminal.h` = terminal operations 
+ - `makefile` 			= can be used for compiling and some runtime testing
 
 To compile main project use the makefile and GNU make in the projects root directory
 
