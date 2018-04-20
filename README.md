@@ -67,12 +67,12 @@ After successful compilation the  binary `sp_server` will be available in the pr
 After launching the server will be available on port 8888. For GET requests you can us a web browser:
  ```
  localhost:8888
-     /terminals 			will list available terminals
-     /terminals/{id} 		will display particular terminal info
+     /terminals 			list available terminals
+     /terminals/{id} 		display particular terminal info
  ```
 For POST requests use curl or similar programm:
 ```
- curl -X POST localhost:8888/terminal 	will create new terminal
+ curl -X POST localhost:8888/terminal 	create new terminal
 ```
 
 To stop the server please press a key in the server's terminal. 
